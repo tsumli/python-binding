@@ -1,0 +1,24 @@
+version: "3.10"
+
+services:
+  base: &default
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ../:/work/python-binding/
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    image: python-binding:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    shm_size: 48gb
+    working_dir: /work/python-binding
+
+  app:
+    <<: *default
+    command: sleep infinity

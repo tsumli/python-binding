@@ -1,0 +1,32 @@
+{
+    "dockerComposeFile": [
+        "docker-compose.yaml"
+    ],
+    "service": "app",
+    "workspaceFolder": "/work/python-binding",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "ms-python.python",
+                "ms-python.autopep8",
+                "njpwerner.autodocstring",
+                "njqdev.vscode-python-typehint",
+                "ms-azuretools.vscode-docker",
+                "redhat.vscode-yaml",
+                "ms-toolsai.jupyter",
+                "ms-python.black-formatter",
+                "rust-lang.rust-analyzer",
+                "vadimcn.vscode-lldb",
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "ms-vscode.cmake-tools"
+            ]
+        },
+        "settings": {
+            "C_Cpp.default.includePath": [
+                "/usr/local/lib/python3.10/dist-packages/nanobind/include"
+            ]
+        }
+    }
+}

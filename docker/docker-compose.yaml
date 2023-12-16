@@ -1,0 +1,44 @@
+version: "3.10"
+
+services:
+  base: &default
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ../:/work/python-binding/
+      - ../.cache:/root/.cache/
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    image: python-binding:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    shm_size: 48gb
+    working_dir: /work/python-binding
+
+  tty:
+    <<: *default
+    command: /bin/bash
+    tty: true
+
+  jupyter:
+    <<: *default
+    ports:
+      - 127.0.0.1:8888:8888
+    command: >
+      /bin/bash -c "/usr/bin/python3 -m jupyter lab --port 8888 \
+                        --allow-root --no-browser --ip=0.0.0.0"
+
+  main:
+    <<: *default
+    command: >
+      /bin/bash -c ". build.sh && python3 main.py"
+
+  test:
+    <<: *default
+    command: >
+      /bin/bash -c ". build.sh && pytest -s"

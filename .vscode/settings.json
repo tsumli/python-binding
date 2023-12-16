@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "*.tcc": "cpp"
+    },
+    "cmake.sourceDirectory": "/work/python-binding/python_binding_cpp",
+    "cmake.buildDirectory": "/work/python-binding/python_binding_cpp/build/${buildType}",
+}
