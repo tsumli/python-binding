@@ -42,42 +42,4 @@ auto argrelmax(const nb::ndarray<const float, nb::shape<nb::any>> &py_arr, const
     return nonzero_array;
 }
 
-auto process_mp(std::vector<bool> &results, nb::ndarray<float, nb::shape<nb::any>> &py_arr,
-                const int shift, const int len) {
-#pragma omp parallel for schedule(static) shared(results)
-    for (auto i = 0; i < len; i++) {
-        if (!results[i]) {
-            continue;
-        }
-        const auto plus = py_arr(std::min(i + shift, len - 1));
-        const auto minus = py_arr(std::max(i - shift, 0));
-        const auto data = py_arr(i);
-        results[i] = (data > plus) && (data > minus);
-    }
-}
-
-auto mp_argrelmax(nb::ndarray<float, nb::shape<nb::any>> &py_arr, const int order) {
-    const auto len = py_arr.shape(0);
-
-    auto results = std::vector<bool>(len, true);
-
-    for (auto shift = 1; shift <= order; shift++) {
-        process_mp(results, py_arr, shift, len);
-    }
-
-    auto nonzero_array = std::vector<uint32_t>();
-    nonzero_array.reserve(10000);
-    for (size_t i = 0; i < len; i++) {
-        if (results[i]) {
-            nonzero_array.emplace_back(static_cast<uint32_t>(i));
-        }
-    }
-
-    // prepare returned value
-    return nonzero_array;
-}
-
-NB_MODULE(cpp_ext, m) {
-    m.def("argrelmax", &argrelmax, nb::rv_policy::move);
-    m.def("mp_argrelmax", &mp_argrelmax, nb::rv_policy::move);
-}
+NB_MODULE(cpp_ext, m) { m.def("argrelmax", &argrelmax, nb::rv_policy::move); }

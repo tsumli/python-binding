@@ -8,10 +8,8 @@ import numpy as np
 from scipy.signal import argrelmax
 from tqdm import tqdm
 
-from python_binding_cpp.build.cpp_ext import argrelmax as cpp_argrelmax
-from python_binding_cpp.build.cpp_ext import mp_argrelmax as cpp_mp_argrelmax
-from python_binding_rust import argrelmax as rs_argrelmax
-from python_binding_rust import mp_argrelmax as rs_mp_argrelmax
+from python_binding_nb.build.cpp_ext import argrelmax as argrelmax_nb
+from python_binding_pyo3 import argrelmax as argrelmax_pyo3
 
 
 def measure(fn: Callable, *args, **kwargs):
@@ -23,25 +21,25 @@ def measure(fn: Callable, *args, **kwargs):
 
 def compare(input: np.ndarray, order: int) -> Dict[str, float]:
     ret = dict()
-    ret["argrelmax"] = measure(argrelmax, input, order=order)
-    ret["cpp_argrelmax"] = measure(cpp_argrelmax, input, order)
-    # ret["cpp_mp_argrelmax"] = measure(cpp_mp_argrelmax, input, order)
-    ret["rs_argrelmax"] = measure(rs_argrelmax, input, order)
-    # ret["rs_mp_argrelmax"] = measure(rs_mp_argrelmax, input, order)
+    ret["orig"] = measure(argrelmax, input, order=order)
+    ret["nb"] = measure(argrelmax_nb, input, order)
+    ret["pyo3"] = measure(argrelmax_pyo3, input, order)
     return ret
 
 
 if __name__ == "__main__":
     times: Dict[Tuple[int, int, int], Dict[str, float]] = dict()
-    EXP = 1
-    for length in tqdm(np.logspace(8, 8, 1)):
-        for order in np.linspace(100, 100, 1):
+    LENGTH_RANGE = np.logspace(5, 8, 10)
+    ORDER_RANGE = np.linspace(10, 100, 10)
+    NUM_EXP = 1
+    for length in tqdm(LENGTH_RANGE):
+        for order in ORDER_RANGE:
             if order >= length:
                 continue
-            for exp in range(EXP):
+            for exp in range(NUM_EXP):
                 input = np.random.randn(
                     int(length),
                 ).astype(np.float32)
                 times[(length, order, exp)] = compare(input, int(order))
-    with open("times_one.pkl", "wb") as f:
+    with open("times.pkl", "wb") as f:
         pickle.dump(times, f)

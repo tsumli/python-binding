@@ -1,3 +1,3 @@
 #!/bin/bash
-(cd ./python_binding_cpp/ && . build.sh)
-(cd ./python_binding_rust/ && . build.sh)
+(cd ./python_binding_nb/ && . build.sh)
+(cd ./python_binding_pyo3/ && . build.sh)

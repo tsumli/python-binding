@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t python-binding:latest --file docker/Dockerfile . 
+docker build --network host -t python-binding:latest --file docker/Dockerfile .
