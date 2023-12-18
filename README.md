@@ -5,7 +5,9 @@ Example usage of binding libraries.
 ## Usage
 ```shell
 sh docker/build.sh
-sh run.sh main
+sh run.sh main  # to measure times
+sh run.sh test  # to test
+sh run.sh jupyter  # to open jupyterlab
 ```
 
 ## libraries
