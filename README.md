@@ -9,11 +9,13 @@ sh run.sh main
 ```
 
 ## libraries
+- pybind11
+  -  https://github.com/pybind/pybind11
 - nanobind
   -  https://github.com/wjakob/nanobind
 - pyo3  
   - https://github.com/PyO3/pyo3
  
 ## TODO
-- [ ] improve implementation using nanobind
+- [ ] improve codes
 - [ ] multithread
