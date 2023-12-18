@@ -8,7 +8,8 @@ import numpy as np
 from scipy.signal import argrelmax
 from tqdm import tqdm
 
-from python_binding_nb.build.cpp_ext import argrelmax as argrelmax_nb
+from python_binding_nb.build.nb_ext import argrelmax as argrelmax_nb
+from python_binding_pb.pb_ext import argrelmax as argrelmax_pb
 from python_binding_pyo3 import argrelmax as argrelmax_pyo3
 
 
@@ -23,6 +24,7 @@ def compare(input: np.ndarray, order: int) -> Dict[str, float]:
     ret = dict()
     ret["orig"] = measure(argrelmax, input, order=order)
     ret["nb"] = measure(argrelmax_nb, input, order)
+    ret["pb"] = measure(argrelmax_pb, input, order)
     ret["pyo3"] = measure(argrelmax_pyo3, input, order)
     return ret
 

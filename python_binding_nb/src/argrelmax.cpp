@@ -42,4 +42,4 @@ auto argrelmax(const nb::ndarray<const float, nb::shape<nb::any>> &py_arr, const
     return nonzero_array;
 }
 
-NB_MODULE(cpp_ext, m) { m.def("argrelmax", &argrelmax, nb::rv_policy::move); }
+NB_MODULE(nb_ext, m) { m.def("argrelmax", &argrelmax, nb::rv_policy::move); }

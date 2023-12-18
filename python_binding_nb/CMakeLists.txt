@@ -17,5 +17,5 @@ execute_process(
 list(APPEND CMAKE_PREFIX_PATH "${NB_DIR}")
 find_package(nanobind CONFIG REQUIRED)
 
-nanobind_add_module(cpp_ext src/argrelmax.cpp)
-target_include_directories(cpp_ext PRIVATE "/usr/local/lib/python3.10/dist-packages/nanobind/include")
+nanobind_add_module(nb_ext src/argrelmax.cpp)
+target_include_directories(nb_ext PRIVATE "/usr/local/lib/python3.10/dist-packages/nanobind/include")
