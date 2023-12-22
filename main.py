@@ -13,7 +13,7 @@ from python_binding_pb.pb_ext import argrelmax as argrelmax_pb
 from python_binding_pyo3 import argrelmax as argrelmax_pyo3
 
 
-def measure(fn: Callable, *args, **kwargs):
+def measure(fn: Callable, *args, **kwargs) -> float:
     start = time.perf_counter()
     fn(*args, **kwargs)
     end = time.perf_counter()
@@ -31,9 +31,9 @@ def compare(input: np.ndarray, order: int) -> Dict[str, float]:
 
 if __name__ == "__main__":
     times: Dict[Tuple[int, int, int], Dict[str, float]] = dict()
-    LENGTH_RANGE = np.logspace(5, 8, 10)
-    ORDER_RANGE = np.linspace(10, 100, 10)
-    NUM_EXP = 1
+    LENGTH_RANGE = np.logspace(2, 6, 30)
+    ORDER_RANGE = np.linspace(10, 100, 30)
+    NUM_EXP = 5
     for length in tqdm(LENGTH_RANGE):
         for order in ORDER_RANGE:
             if order >= length:
