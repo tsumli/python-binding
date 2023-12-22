@@ -10,6 +10,8 @@ sh run.sh test  # to test
 sh run.sh jupyter  # to open jupyterlab
 ```
 
+And you can check the comparison on `analysis.ipynb` for each `length` and `order`
+
 ## libraries
 - pybind11
   -  https://github.com/pybind/pybind11
