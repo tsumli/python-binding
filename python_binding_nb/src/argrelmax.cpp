@@ -10,20 +10,22 @@
 
 namespace nb = nanobind;
 
-auto process(std::vector<bool> &results, const nb::ndarray<const float, nb::shape<nb::any>> &py_arr,
-             const int shift, const size_t len) {
+auto process(std::vector<bool> &results,
+             nb::ndarray<const float, nb::shape<nb::any>, nb::c_contig> &py_arr, const int shift,
+             const size_t len) {
+    auto arr_view = py_arr.view();
     for (auto i = 0; i < static_cast<int>(len); i++) {
         if (!results[i]) {
             continue;
         }
-        const auto plus = py_arr(std::min(i + shift, static_cast<int>(len - 1)));
-        const auto minus = py_arr(std::max(i - shift, 0));
-        const auto data = py_arr(i);
+        const auto plus = arr_view(std::min(i + shift, static_cast<int>(len - 1)));
+        const auto minus = arr_view(std::max(i - shift, 0));
+        const auto data = arr_view(i);
         results[i] = (data > plus) && (data > minus);
     }
 }
 
-auto argrelmax(const nb::ndarray<const float, nb::shape<nb::any>> &py_arr, const int order) {
+auto argrelmax(nb::ndarray<const float, nb::shape<nb::any>, nb::c_contig> py_arr, const int order) {
     const auto len = py_arr.shape(0);
     auto results = std::vector<bool>(len, true);
     for (size_t shift = 1; shift <= static_cast<size_t>(order); shift++) {
